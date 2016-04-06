@@ -7,6 +7,8 @@ use 5.010001;
 use strict;
 use warnings;
 
+our %SPEC;
+
 $SPEC{extract_date} = {
     v => 1.1,
     summary => 'Extract date from lines of text',
