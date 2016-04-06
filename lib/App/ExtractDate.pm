@@ -9,6 +9,8 @@ use warnings;
 
 our %SPEC;
 
+our $DATE_EXTRACT_MODULE = $ENV{PERL_DATE_EXTRACT_MODULE} // "Date::Extract";
+
 $SPEC{extract_date} = {
     v => 1.1,
     summary => 'Extract date from lines of text',
@@ -20,16 +22,21 @@ $SPEC{extract_date} = {
             cmdline_src => 'stdin_or_files',
             #stream => 1,
         },
-        # XXX allow choosing which module to use, e.g. Date::Extract or
-        # Date::Extract::Surprise etc.
+        module => {
+            summary => 'Date::Extract module to use',
+            schema => 'str*',
+            cmdline_aliases => {m=>{}},
+        },
     },
 };
 sub extract_date {
-    require Date::Extract;
-
     my %args = @_;
 
-    my $parser = Date::Extract->new;
+    my $module = $args{module} // $DATE_EXTRACT_MODULE;
+    $module = "Date::Extract::$module" unless $module =~ /::/;
+    die "Invalid module '$module'" unless $module =~ /\A\w+(::\w+)*\z/;
+    eval "use $module"; die if $@;
+    my $parser = $module->new;
 
     my $res = [];
     for my $line (@{$args{input}}) {
@@ -43,3 +50,16 @@ sub extract_date {
 
 1;
 # ABSTRACT:
+
+=head1 SYNOPSIS
+
+ % ls | extract-date
+
+ % ls | extract-date -m ID   ;# use Date::Extract::ID
+
+
+=head1 ENVIRONMENT
+
+=head2 PERL_DATE_EXTRACT_MODULE => str
+
+Set default for C<module>.
