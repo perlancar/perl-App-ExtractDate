@@ -26,6 +26,13 @@ $SPEC{extract_date} = {
             summary => 'Date::Extract module to use',
             schema => 'str*',
             cmdline_aliases => {m=>{}},
+            completion => sub {
+                require Complete::Module;
+                my %args = @_;
+                my $word = $args{word};
+                Complete::Module::complete_module(
+                    word=>$word, ns_prefix=>"Date::Extract");
+            },
         },
     },
 };
