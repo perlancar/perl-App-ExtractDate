@@ -9,7 +9,7 @@ use warnings;
 
 our %SPEC;
 
-our $DATE_EXTRACT_MODULE = $ENV{PERL_DATE_EXTRACT_MODULE} // "Date::Extract";
+our $DATE_EXTRACT_MODULE = $ENV{PERL_DATE_EXTRACT_MODULE} // "Date::Extract::PERLANCAR";
 
 $SPEC{extract_date} = {
     v => 1.1,
@@ -24,15 +24,9 @@ $SPEC{extract_date} = {
         },
         module => {
             summary => 'Date::Extract module to use',
-            schema => 'str*',
+            schema => 'perl::modname*',
+            default => 'Date::Extract::PERLANCAR',
             cmdline_aliases => {m=>{}},
-            completion => sub {
-                require Complete::Module;
-                my %args = @_;
-                my $word = $args{word};
-                Complete::Module::complete_module(
-                    word=>$word, ns_prefix=>"Date::Extract");
-            },
         },
     },
 };
