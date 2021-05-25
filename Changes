@@ -1,3 +1,9 @@
+0.004   2021-05-25  Released-By: PERLANCAR; Urgency: high
+
+	- [build] Rebuild to update Sah coercion module names (old Sah coercion
+          modules have been purged from CPAN).
+
+
 0.003   2017-06-14  Released-By: PERLANCAR
 
 	- Change default parser module from Date::Extract to
