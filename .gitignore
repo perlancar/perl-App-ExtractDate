@@ -2,3 +2,4 @@ App-ExtractDate-*
 .build
 *~
 nytprof*
+.DS_Store
